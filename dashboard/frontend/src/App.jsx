@@ -12,7 +12,7 @@ import Paymentlayout from "./Components/Paymentlayout";
 import Payment from "./Pages/payment/Payment";
 import Paymentdetail from "./Pages/payment/Paymentdetail";
 import Customerlayout from "./Components/Customerlayout";
-import Customer from "./Pages/customer/customer";
+import Customer from "./Pages/customer/Customer";
 import CustomerDetails from "./Pages/customer/CustomerDetails";
 import Settinglayout from "./Components/Settinglayout";
 import Setting from "./Pages/setting/Setting";
