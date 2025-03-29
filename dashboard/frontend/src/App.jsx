@@ -3,7 +3,7 @@ import React from "react";
 import Vieworder from "./Pages/order/Vieworder";
 import Orderdetail from "./Pages/order/Orderdetail";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./Pages/dashboard/dashboard";
+import Dashboard from "./Pages/dashboard/Dashboard";
 import Orderlayout from "./Components/Orderlayout";
 import DashboardLayout from "./Components/DashboardLayout";
 import Productlayout from "./Components/Productlayout";
