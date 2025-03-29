@@ -5,8 +5,8 @@ import { Search, ChevronDown, ShoppingCart, LogIn,MapPin,   LocateFixed,
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
-import Signup from "../Pages/Signup";
-import Login from "../Pages/Login";
+import Signup from "../pages/Signup";
+import Login from "../pages/Login";
 // import { useDispatch, useSelector } from "react-redux";
 // import { setToken } from "../slices/authSlice";
 import { useAuth } from "../context/AuthContext";
