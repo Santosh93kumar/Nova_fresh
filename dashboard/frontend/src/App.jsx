@@ -9,7 +9,7 @@ import DashboardLayout from "./Components/DashboardLayout";
 import Productlayout from "./Components/Productlayout";
 import Product from "./Pages/product/Product";
 import Paymentlayout from "./Components/Paymentlayout";
-import Payment from "./Pages/payment/payment";
+import Payment from "./Pages/payment/Payment";
 import Paymentdetail from "./Pages/payment/Paymentdetail";
 import Customerlayout from "./Components/Customerlayout";
 import Customer from "./Pages/customer/customer";
