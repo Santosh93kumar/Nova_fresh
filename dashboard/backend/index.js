@@ -15,7 +15,7 @@ console.log(process.env.PORT)
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL_1,process.env.FRONTEND_URL_2,"https://nova-fresh-ecommerice.onrender.com/","https://nava-fresh-admin-frontend.onrender.com" ],
+    origin: [process.env.FRONTEND_URL_1,process.env.FRONTEND_URL_2,"https://nova-fresh-ecommerice.onrender.com","https://nava-fresh-admin-frontend.onrender.com" ],
     credentials: true,
   })
 );
