@@ -49,7 +49,7 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
       short_description: product.short_description,
       long_description: product.long_description,
       weight: "100g",
-      image: `${import.meta.env.VITE_API_URL}/uploads/${product.images}`
+      image: `http://localhost:8000/uploads/${product.images}`
     }));
   
     const addInCart = (product) => {
@@ -79,7 +79,25 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
 
   return (
     <div className="p-4">
-    
+      {/* Product Grid */}
+      {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {product.map((product) => (
+          <div
+            key={product._id}
+            className="p-4 border rounded-md flex flex-col items-center relative"
+          >
+            {product.images && (
+              <img
+                src={`http://localhost:8000/uploads/${product.images}`}
+                alt="Product Image"
+                className="h-20 w-20 object-cover"
+              />
+            )}
+            <p className="text-center font-bold">{product.pname}</p>
+            <p className="text-sm text-gray-700">Rs.{product.price}</p>
+          </div>
+        ))}
+      </div> */}
 
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-bold">{category}</h2>
