@@ -102,12 +102,12 @@ export default function SettingsPage() {
 
   return (
     <div className="w-full min-h-screen p-6 bg-gray-100 flex flex-col">
-      <h2 className="text-lg font-semibold mb-4">Settings</h2>
+      <h2 className="text-sm md:text-lg font-semibold mb-4">Settings</h2>
       <div className="flex flex-row gap-6">
-        <div className="w-1/4 h-1/2 bg-white p-4 rounded-lg shadow-md">
+        <div className="w-1/4 h-96 bg-white  p-4 rounded-lg shadow-md">
           <ul className="space-y-2">
             <li
-              className={`p-2 rounded-lg cursor-pointer text-gray-600 ${
+              className={`p-2 text-xs sm:text-sm md:text-base rounded-lg cursor-pointer flex text-gray-600 ${
                 activeTab === "personalInfo"
                   ? "bg-blue-600 text-white"
                   : "hover:bg-gray-200"
@@ -116,18 +116,18 @@ export default function SettingsPage() {
             >
               <img
                 src={PersonalIcon}
-                className="w-4 h-4 mr-2 inline"
+                className="w-4 h-4 mr-2 flex items-center my-auto"
                 alt="icon"
               />
               Personal Information
               <img
                 src={DropIcon}
-                className="w-2 h-4 ml-15 inline"
+                className="w-2 h-4 ml-15 flex items-center my-auto"
                 alt="dropdown"
               />
             </li>
             <li
-              className={`p-2 rounded-lg cursor-pointer text-gray-600 ${
+              className={`p-2 rounded-lg cursor-pointer text-gray-600 text-xs sm:text-sm md:text-base ${
                 activeTab === "password"
                   ? "bg-blue-600 text-white"
                   : "hover:bg-gray-200"
@@ -136,8 +136,9 @@ export default function SettingsPage() {
             >
               <img
                 src={PersonalIcon}
-                className="w-4 h-4 mr-2 inline"
+                className="w-4 h-4 mr-2 inline text-gray-200"
                 alt="icon"
+                
               />
               Password
               <img
@@ -147,7 +148,7 @@ export default function SettingsPage() {
               />
             </li>
             <li
-              className={`p-2 rounded-lg cursor-pointer text-gray-600 ${
+              className={`p-2 rounded-lg cursor-pointer flex text-gray-600 text-xs sm:text-sm md:text-base ${
                 activeTab === "storeInfo"
                   ? "bg-blue-600 text-white"
                   : "hover:bg-gray-200"
@@ -156,18 +157,22 @@ export default function SettingsPage() {
             >
               <img
                 src={PersonalIcon}
-                className="w-4 h-4 mr-2 inline"
+                className= {`w-4 h-4 mr-2 flex items-center my-auto ${
+                  activeTab === "storeInfo"
+                  ? "bg-blue-600 text-gray-400"
+                  : "hover:bg-gray-200 text-gray-400"
+                }`}
                 alt="icon"
               />
               Store Information
               <img
                 src={DropIcon}
-                className="w-2 h-4 ml-15 inline"
+                className="w-2 h-4 ml-15 flex items-center my-auto text-gray-400"
                 alt="dropdown"
               />
             </li>
             <li
-              className={`p-2 rounded-lg cursor-pointer text-gray-600 ${
+              className={`p-2 rounded-lg cursor-pointer flex text-gray-600 text-xs sm:text-sm md:text-base ${
                 activeTab === "payment"
                   ? "bg-blue-600 text-white"
                   : "hover:bg-gray-200"
@@ -176,13 +181,13 @@ export default function SettingsPage() {
             >
               <img
                 src={PersonalIcon}
-                className="w-4 h-4 mr-2 inline"
+                className="w-4 h-4 mr-2 flex items-center my-auto"
                 alt="icon"
               />
               Payment
               <img
                 src={DropIcon}
-                className="w-2 h-4 ml-15 inline"
+                className="w-2 h-4 ml-15 flex items-center my-auto"
                 alt="dropdown"
               />
             </li>
