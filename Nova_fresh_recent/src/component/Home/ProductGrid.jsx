@@ -11,35 +11,8 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
   const { toggleWishlistItem, isInWishlist } = useWishlist();
   const { setSelectedProduct, setAddToCart, addToCart } = useProduct();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8000/product/");
-  //       const data = await response.json();
-  //       console.log(data);
 
-  //       if (data.status == 1 && data.products) {
-  //         setProduct(data.products);
-  //       } else {
-  //         console.log("Failed to fetch data");
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // const products = Array.from({ length: 6 }, (_, i) => ({
-  //   id: `${category}-${i}`,
-  //   name: `${product.pname}`,
-  //   price: 10,
-  //   weight: "250g",
-  //   image: ProductImage,
-  //   quantity: 1,
-  //   stripePriceId: "price_1R1iAFHPZ4xir96rq1dM15F6",
-  // }));
+ 
   console.log("Comment",products);
     const productsView = products.slice(0, 6).map((product, index) => ({
       // id: `${index}`,
@@ -51,6 +24,7 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
       weight: "100g",
       image: `http://localhost:8000/uploads/${product.images}`
     }));
+    console.log("hello",productsView)
   
     const addInCart = (product) => {
     setAddToCart((prevCart) => {
@@ -79,25 +53,7 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
 
   return (
     <div className="p-4">
-      {/* Product Grid */}
-      {/* <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {product.map((product) => (
-          <div
-            key={product._id}
-            className="p-4 border rounded-md flex flex-col items-center relative"
-          >
-            {product.images && (
-              <img
-                src={`http://localhost:8000/uploads/${product.images}`}
-                alt="Product Image"
-                className="h-20 w-20 object-cover"
-              />
-            )}
-            <p className="text-center font-bold">{product.pname}</p>
-            <p className="text-sm text-gray-700">Rs.{product.price}</p>
-          </div>
-        ))}
-      </div> */}
+      
 
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-bold">{category}</h2>
