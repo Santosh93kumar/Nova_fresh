@@ -22,7 +22,7 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
       short_description: product.short_description,
       long_description: product.long_description,
       weight: "100g",
-      image: `http://localhost:8000/uploads/${product.images}`
+      image: `${import.meta.env.VITE_API_URL}/uploads/${product.images}`
     }));
     console.log("hello",productsView)
   
