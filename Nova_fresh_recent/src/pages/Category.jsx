@@ -87,7 +87,7 @@ function Category() {
                     >
                       <img
                         onClick={() => handleClick(product)}
-                        src={`${import.meta.env.VITE_API_URL}/uploads/${product.images}`}
+                        src={`https://nova-fresh-backend.onrender.com/uploads/${product.images}`}
                         alt={product.name}
                         className="h-20 w-20 cursor-pointer"
                       />
