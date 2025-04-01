@@ -87,7 +87,7 @@ function Category() {
                     >
                       <img
                         onClick={() => handleClick(product)}
-                        src={`http://localhost:8000/uploads/${product.images}`}
+                        src={`${import.meta.env.VITE_API_URL}/uploads/${product.images}`}
                         alt={product.name}
                         className="h-20 w-20 cursor-pointer"
                       />
