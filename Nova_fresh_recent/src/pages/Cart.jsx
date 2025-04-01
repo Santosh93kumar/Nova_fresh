@@ -127,7 +127,7 @@ const Cart = ({ isCartOpen, setIsCartOpen }) => {
         {/* Buy Now Button (Fixed) */}
         <div className="py-3  flex justify-center">
           <button onClick={()=>{
-            navigate("/checkout")
+            navigate("/checkoutpage")
             setIsCartOpen(!isCartOpen)
           }} className="bg-[#76BA1F]  px-6 py-2 rounded-md w-full">
             Buy Now
