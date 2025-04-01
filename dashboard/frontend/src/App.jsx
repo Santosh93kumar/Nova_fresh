@@ -20,6 +20,7 @@ import AddProduct from "./Pages/product/AddProduct";
 import UserRegistration from "./Components/UserRegistration";
 import Login from "../src/Pages/Login";
 
+
 function App() {
   const router = createBrowserRouter([
     {
