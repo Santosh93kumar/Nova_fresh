@@ -38,6 +38,14 @@ function Header() {
     }
   };
 
+   // Handle selecting a suggestion for location
+   const handleSuggestionClick = (suggestion) => {
+    setLocation(suggestion.display_name);
+    setSuggestions([]);
+    setCity(suggestion.display_name);
+    setLocationPopup(false); // Clear suggestions after selection
+  };
+
    // Handle input change and fetch suggestions for location
    const handleInputChange = (e) => {
     setLocation(e.target.value);
