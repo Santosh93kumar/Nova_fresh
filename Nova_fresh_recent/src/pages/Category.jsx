@@ -49,10 +49,10 @@ function Category() {
 
      const addInCart = (product) => {
         setAddToCart((prevCart) => {
-          const existingProduct = prevCart.find((item) => item.id === product.id);
+          const existingProduct = prevCart.find((item) => item._id === product._id);
     
           if (existingProduct) {
-            toast.success(`${product.name} quantity updated! 🛒`, {
+            toast.success(`${product.pname} quantity updated! 🛒`, {
               autoClose: 1500,
             });
             return prevCart.map((item) =>
@@ -61,7 +61,7 @@ function Category() {
                 : item
             );
           } else {
-            toast.success(`${product.name} added to cart! ✅`, { autoClose: 1500 });
+            toast.success(`${product.pname} added to cart! ✅`, { autoClose: 1500 });
             return [...prevCart, { ...product, quantity: 1 }];
           }
         });
@@ -91,7 +91,7 @@ function Category() {
                         alt={product.name}
                         className="h-20 w-20 cursor-pointer"
                       />
-                      con
+                      
         
                       <button
                         className="absolute top-2 right-2 text-xl"
@@ -106,7 +106,7 @@ function Category() {
         
                     
         
-                      <p className="text-lg font-bold text-center">{product.name}</p>
+                      <p className="text-lg font-bold text-center">{product.pname}</p>
                       <p className="text-sm text-gray-700">
                         Rs.{product.price} | {product.weight}
                       </p>

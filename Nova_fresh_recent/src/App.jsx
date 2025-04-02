@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import React from "react";
+import OrderStatus from "./component/Profile/OrderStatus";
 import Applayout from "./layout/Applayout";
 import Homepage from "./pages/Homepage";
 import Detail from "./pages/Detail";
@@ -74,7 +75,14 @@ function App() {
               <Recommendation />
             </ProtectedRoute>
           ),
-        },
+        },{
+          path: "/profile/yourOrder",
+          element: (
+            <ProtectedRoute>
+              <OrderStatus />
+            </ProtectedRoute>
+          ),
+        }
       ],
     },
   ]);

@@ -25,34 +25,32 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
       image: `${import.meta.env.VITE_API_URL}/uploads/${product.images}`
     }));
     console.log("hello",productsView)
-  
-    const addInCart = (product) => {
-    setAddToCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
-
-      if (existingProduct) {
-        toast.success(`${product.name} quantity updated! 🛒`, {
-          autoClose: 1500,
-        });
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        toast.success(`${product.name} added to cart! ✅`, { autoClose: 1500 });
-        return [...prevCart, { ...product, quantity: 1 }];
-      }
-    });
-  };
-
+   const addInCart = (product) => {
+          setAddToCart((prevCart) => {
+            const existingProduct = prevCart.find((item) => item.id === product.id);
+      
+            if (existingProduct) {
+              toast.success(`${product.name} quantity updated! 🛒`, {
+                autoClose: 1500,
+              });
+              return prevCart.map((item) =>
+                item.id === product.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+              );
+            } else {
+              toast.success(`${product.pname} added to cart! ✅`, { autoClose: 1500 });
+              return [...prevCart, { ...product, quantity: 1 }];
+            }
+          });
+        };
   const handleClick = (product) => {
     setSelectedProduct(product);
     navigate("/detail");
   };
 
   return (
-    <div className="p-4">
+    <div className="px-8 sm:px-10 md:px-12">
       
 
       <div className="flex justify-between items-center mb-2">
@@ -71,14 +69,16 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
           return (
             <div
               key={product.id}
-              className="p-4 border rounded-md flex flex-col items-center relative"
+              className="p-4 border rounded-md flex flex-col relative bg-gray-100"
             >
-              <img
+             <div className='h-4/5 flex justify-center items-center'>
+             <img
                 onClick={() => handleClick(product)}
                 src={product.image}
                 alt={product.name}
-                className="h-20 w-20 cursor-pointer"
+                className=" cursor-pointer h-20 w-24"
               />
+             </div>
 
               <button
                 className="absolute top-2 right-2 text-xl"
@@ -98,10 +98,12 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
                 {isWatchlisted ? "❤️" : "🤍"}
               </button> */}
 
-              <p className="text-lg font-bold text-center">{product.name}</p>
-              <p className="text-sm text-gray-700">
-                Rs.{product.price} | {product.weight}
-              </p>
+              <p className="text-lg font-bold   ">{product.name}</p>
+              <div className="text-sm flex justify-between items-center text-gray-700 w-full">
+              <span className="font-medium">Rs.{product.price}</span>
+              <span>{product.weight}</span>
+            </div>
+
 
                 <button
                   onClick={() => addInCart(product)}

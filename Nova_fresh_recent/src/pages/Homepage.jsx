@@ -58,7 +58,7 @@ const Homepage = () => {
 
   return (
     <ProductProvider>
-    <div className="bg-gray-100 pt-16 lg:pt-[4rem]">
+    <div className="bg-white pt-16 lg:pt-[4rem]">
       <HeroSection />
       <CategorySection categories={categories} />
       {categories.map((category, index) => {

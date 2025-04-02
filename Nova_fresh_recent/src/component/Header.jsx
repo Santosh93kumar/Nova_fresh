@@ -13,7 +13,7 @@ import { useAuth } from "../context/AuthContext";
 import { useProduct } from "../context/ProductContext";
 import axios from "axios";
 import Cart from "../pages/Cart";
-
+import { Menu } from 'lucide-react';
 function Header() {
   //   const dispatch = useDispatch();
   //   const { token } = useSelector((state) => state.auth);
@@ -181,20 +181,27 @@ function Header() {
   
   return (
     <>
-    <div className=" relative flex w-full py-2 px-12">
+    <div className=" relative flex w-full py-2 px-8 sm:px-10 md:px-12">
       {/* Logo */}
-      <div className="w-2/12">
+      <div className="w-6/12 md:w-2/12  flex items-center">
         <Link to="/">
           <img
             src={logo}
-            className="w-[70%] flex item-center my-1 "
+            className="w-16 h-8 md:w-full flex items-center my-auto "
             alt="Logo"
           />
         </Link>
       </div>
 
+      <div className="w-1/2 md:hidden">
+      <div className="flex justify-end">
+        <Menu className='' />
+      </div>
+    </div>
+
+
       {/* Search Section */}
-      <div className="w-7/12 ">
+      <div className="hidden md:flex   w-6/12  ">
           <div className="flex w-8/12 border border-black rounded-lg m-auto">
             <div className="pl-4 py-2">
               <Search />
@@ -213,7 +220,7 @@ function Header() {
         </div>
 
       {/* Location, Cart & Profile Icon */}
-      <div className="flex item-center justify-between my-auto w-3/12">
+      <div className="hidden md:flex item-center justify-end my-auto w-3/12">
         <div className="flex md:gap-3 lg:gap-4 justify-between items-center gap-5">
           <div className="flex">
             
@@ -341,6 +348,7 @@ function Header() {
         <Login setSignUpModal={setSignUpModal} setLogInModal={setLogInModal} />
       )}
     </div>
+    
     <div>
         {locationPopup && (
           <div
