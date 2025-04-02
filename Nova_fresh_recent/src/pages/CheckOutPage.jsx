@@ -105,7 +105,6 @@ const CheckOutPage = () => {
       spent: totalPrice,
     };
   
-    console.log("Order Data Before Sending:", JSON.stringify(orderData, null, 2));
   
     try {
       const response = await axios.post(
@@ -115,9 +114,7 @@ const CheckOutPage = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-  
-      console.log("Response from API:", response.data);
-  
+    
       if (response.status === 201) {
         setShowCheckoutPopup(false);
         toast.success("Order details saved successfully!");

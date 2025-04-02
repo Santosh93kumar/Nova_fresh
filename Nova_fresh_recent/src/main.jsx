@@ -9,7 +9,7 @@ import rootReducer from "./reducer/index.js";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { WishlistProvider } from "./component/Home/WishlistContext.jsx";
 import { ToastContainer } from "react-toastify";
-import Toast from './component/Home/Toast';
+import Toast from "./component/Home/Toast";
 import { ProductProvider } from "./context/ProductContext.jsx";
 const store = configureStore({
   reducer: rootReducer,
@@ -19,12 +19,12 @@ createRoot(document.getElementById("root")).render(
   // <StrictMode >
   <Provider store={store}>
     <AuthProvider>
-    <WishlistProvider>
-    <ToastContainer />
-    <Toast />
-     <ProductProvider>
-     <App />
-     </ProductProvider>
+      <WishlistProvider>
+        <ToastContainer />
+        <Toast />
+        <ProductProvider>
+          <App />
+        </ProductProvider>
       </WishlistProvider>
     </AuthProvider>
   </Provider>

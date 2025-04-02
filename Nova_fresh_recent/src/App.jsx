@@ -34,10 +34,11 @@ function App() {
         {
           path: "/detail",
           element: <Detail />,
-        },{
-          path:'/checkoutpage',
-          element:<CheckOutPage/>
-        }
+        },
+        {
+          path: "/checkoutpage",
+          element: <CheckOutPage />,
+        },
       ],
     },
     {
@@ -75,14 +76,15 @@ function App() {
               <Recommendation />
             </ProtectedRoute>
           ),
-        },{
+        },
+        {
           path: "/profile/yourOrder",
           element: (
             <ProtectedRoute>
               <OrderStatus />
             </ProtectedRoute>
           ),
-        }
+        },
       ],
     },
   ]);

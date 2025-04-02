@@ -20,21 +20,15 @@ function Category() {
         try {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/product/`);
           const product = response.data; // The full response object
-          
-          console.log("Full API Response:", product);
-      
+                
           // Extract the 'products' array
-          const productList = product.products; 
-      
-          console.log("Extracted Products Array:", productList);
-          
+          const productList = product.products;           
       
           // Ensure 'productList' is an array before filtering
           const prod = Array.isArray(productList) 
               ? productList.filter((prod) => prod.category === category) 
               : [];
       
-          console.log("Filtered Products:", prod);
           setproduct(prod)
       
       } catch (error) {
@@ -44,7 +38,6 @@ function Category() {
       };
   
       fetchProducts();
-      console.log(fetchProducts)
     }, []);
 
      const addInCart = (product) => {

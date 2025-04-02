@@ -14,13 +14,13 @@ import { useProduct } from "../context/ProductContext";
 import axios from "axios";
 import Cart from "../pages/Cart";
 import { Menu } from 'lucide-react';
+import { toast } from "react-toastify";
 function Header() {
   //   const dispatch = useDispatch();
   //   const { token } = useSelector((state) => state.auth);
   const { user, logout } = useAuth();
   const { addToCart } = useProduct();
   const [location, setLocation] = useState("");
-  console.log("added to",addToCart)
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [locationPopup, setLocationPopup] = useState(false);
@@ -138,9 +138,6 @@ function Header() {
         `https://nominatim.openstreetmap.org/search?format=json&q=${query}&countrycodes=IN`
       );
       const data = await response.json();
-
-      console.log("Search Results:", data); // Debugging
-
       if (data.length > 0) {
         const foundCity = data[0].display_name;
         toast.success(`Location found: ${foundCity}`);

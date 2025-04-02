@@ -1,6 +1,22 @@
 import React, { useState } from "react";
 import logo from "../component/images/logo.png";
 import { RxCross2 } from "react-icons/rx";
+import { z } from "zod";
+import { toast } from "react-toastify";
+
+const schema = z
+  .object({
+    firstName: z.string().min(2, "First Name must be at least 2 characters"),
+    lastName: z.string().min(2, "Last Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    contact: z.string().regex(/^\d{10}$/, "Contact must be 10 digits"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    repeatPassword: z.string(),
+  })
+  .refine((data) => data.password === data.repeatPassword, {
+    message: "Passwords do not match",
+    path: ["repeatPassword"],
+  });
 
 function Signup({ setSignUpModal, setLogInModal }) {
   const [formData, setFormData] = useState({
@@ -21,16 +37,16 @@ function Signup({ setSignUpModal, setLogInModal }) {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-   console.log("signup formData: ",formData)
-    // Email validation
-    if (!formData.email.includes("@")) {
-      alert("Please enter a valid email.");
-      return;
-    }
 
-    // Password matching validation
-    if (formData.password !== formData.repeatPassword) {
-      alert("Passwords do not match!");
+    //add avalidation here
+    const result = schema.safeParse(formData);
+    if (!result.success) {
+      const formattedErrors = result.error.flatten().fieldErrors;
+      console.log("Validation Errors:", formattedErrors);
+
+      // Show the first error dynamically
+      const firstError = Object.values(formattedErrors).flat()[0];
+      toast.error(firstError || "Validation failed!");
       return;
     }
 
@@ -38,15 +54,17 @@ function Signup({ setSignUpModal, setLogInModal }) {
 
     try {
       console.log("payload: ", payload);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      console.log(import.meta.env.VITE_API_URL)
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to register user");
-
+      toast.success("Registration successful! Please log in.");
       const data = await response.json();
       console.log("Signup successful:", data);
 

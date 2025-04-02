@@ -1,9 +1,6 @@
 const Product = require("../model/product_model");
 
 const newProduct = async (req, res) => {
-    console.log(req.body);
-    console.log(req.files);
-
     let {
         pname,
         short_description,
@@ -41,7 +38,6 @@ const newProduct = async (req, res) => {
     try {
         let newProduct = new Product(productData);
         let saveProduct = await newProduct.save();
-        console.log("Product registered successfully:", saveProduct);
 
         resObj = {
             status: 1,
@@ -60,10 +56,8 @@ const newProduct = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-    console.log('pro',)
     try {
         const products = await Product.find();
-        console.log("propducy",products)
         res.json({ status: 1, products: products });
     } catch (error) {
         console.error("Error fetching products:", error);

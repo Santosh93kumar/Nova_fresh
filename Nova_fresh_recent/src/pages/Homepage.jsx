@@ -22,13 +22,11 @@ const Homepage = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/product/`);
-        console.log("Full API Response:", response.data);
 
         const fetchedProducts = response.data.products;
 
         if (Array.isArray(fetchedProducts)) {
           setProducts(fetchedProducts); 
-          console.log(fetchedProducts)
 
           const uniqueCategories = [
             ...new Set(
@@ -38,7 +36,6 @@ const Homepage = () => {
             ),
           ];
           setCategories(uniqueCategories);
-          console.log(uniqueCategories)
         } else {
           console.error("API response does not contain an array:", response.data);
         }

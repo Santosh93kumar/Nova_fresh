@@ -102,6 +102,7 @@ router.post("/login", async (req, res) => {
 // @desc    Verify user token and return user data
 // @access  Private
 router.get("/verify", auth, async (req, res) => {
+  console.log("verifing")
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {

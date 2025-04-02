@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./App/route/auth");
 const { mainRoute } = require("./App/mainRoute");
 
@@ -21,6 +22,7 @@ app.use(
 );
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(mainRoute);
 app.use("/api/auth", userRouter)
