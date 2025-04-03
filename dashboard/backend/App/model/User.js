@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const { ref } = require("joi");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -33,6 +34,25 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password is required"],
     minlength: 6,
   },
+
+  orders: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      status: {
+        type: String,
+        enum: ["pending", "shipped", "delivered"],
+        default: "pending",
+      },
+      orderedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -59,6 +79,6 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const UserModel = mongoose.model("Admin", userSchema);
+const UserModel = mongoose.model("User", userSchema);
 
 module.exports = UserModel;

@@ -7,16 +7,20 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./App/route/auth");
 const { mainRoute } = require("./App/mainRoute");
 
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
-console.log(process.env.PORT)
-
+console.log(process.env.PORT);
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL_1,process.env.FRONTEND_URL_2,"https://nova-fresh-ecommerice.onrender.com","https://nava-fresh-admin-frontend.onrender.com" ],
+    origin: [
+      process.env.FRONTEND_URL_1,
+      process.env.FRONTEND_URL_2,
+      "https://nova-fresh-ecommerice.onrender.com",
+      "https://nava-fresh-admin-frontend.onrender.com",
+    ],
     credentials: true,
   })
 );
@@ -25,7 +29,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use(mainRoute);
-app.use("/api/auth", userRouter)
+app.use("/api/auth", userRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Connect to MongoDB

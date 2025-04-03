@@ -1,12 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-  console.log("auth running", req.cookies)
   try {
     // Get token from cookie
     const token = req.cookies.token;
-    console.log("token: ", token);
-
     if (!token) {
       return res
         .status(401)
@@ -15,7 +12,6 @@ module.exports = (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("decoded token: ", decoded);
     // Add user from payload
     req.user = decoded;
     next();

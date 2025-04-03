@@ -22,6 +22,7 @@ const ProductGrid = ({ category, addToWatchlist, watchlist, products }) => {
     image: `${import.meta.env.VITE_API_URL}/uploads/${product.images}`,
   }));
   const addInCart = (product) => {
+    console.log("product: ", product);
     setAddToCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
 

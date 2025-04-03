@@ -8,14 +8,20 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 // import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const CheckOutPage = () => {
   const { addToCart, setAddToCart, setSelectedProduct } = useProduct();
+  console.log("addToCart: ", addToCart);
   const navigate = useNavigate();
   const [watchlist, setWatchlist] = useState([]);
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
+  const { user } = useAuth();
+
+  const [productId, setProductId] = useState([]);
+
   const handleClick = (product) => {
     setSelectedProduct(product);
     navigate("/detail");
@@ -63,30 +69,6 @@ const CheckOutPage = () => {
 
   const isWatchlisted = (product) => watchlist.some((p) => p.id === product.id);
 
-  //payment
-  // const handlePayment = async (e) => {
-  //   e.preventDefault();
-  //   const stripe = await stripePromise;
-  //   if (!stripe) {
-  //     console.error("Stripe is not initialized!");
-  //     return;
-  //   }
-
-  //   const { error } = await stripe.redirectToCheckout({
-  //     lineItems: addToCart.map((item) => ({
-  //       price: item.stripePriceId, // Use the price ID from Stripe Dashboard
-  //       quantity: item.quantity || 1,
-  //     })),
-  //     mode: "payment",
-  //     successUrl: "http://localhost:3000/success", // Change when deployed
-  //     cancelUrl: "http://localhost:3000/cancel",
-  //   });
-
-  //   if (error) {
-  //     console.error("Error after await function:", error);
-  //   }
-  // };
-  
   const handleCheckout = async (e) => {
     e.preventDefault();
   
@@ -94,40 +76,48 @@ const CheckOutPage = () => {
       alert("Your cart is empty!");
       return;
     }
+    
+    // Create a separate order for each product
+    const orderPromises = addToCart.map(async (item) => {
+      const orderData = {
+        userId: user._id,
+        order_id: Math.floor(1000 + Math.random() * 9000),
+        product_id: item.id, // Single product ID
+        items: 1, // Each order has 1 item
+        date: new Date().toISOString().split("T")[0],
+        customer_name: user.firstName + " " + user.lastName,
+        paid: "yes",
+        status: "pending",
+        spent: item.price * (item.quantity || 1), // Price for this item
+      };
   
-    const orderData = {
-      order_id: Math.floor(1000 + Math.random() * 9000), 
-      items: addToCart.length,
-      date: new Date().toISOString().split('T')[0], // Only date part
-      customer_name: "Santosh Kumar", // Replace with actual user data later
-      paid: "yes",
-      status: "proceed",
-      spent: totalPrice,
-    };
-  
-  
-    try {
-      const response = await axios.post(
+      return axios.post(
         `${import.meta.env.VITE_API_URL}/order/new`,
         orderData,
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-    
-      if (response.status === 201) {
+    });
+  
+    try {
+      const responses = await Promise.all(orderPromises);
+      
+      // Check if all orders were successful
+      const allSuccessful = responses.every(response => response.status === 201);
+      
+      if (allSuccessful) {
         setShowCheckoutPopup(false);
-        toast.success("Order details saved successfully!");
+        toast.success("Orders placed successfully!");
+        // Clear cart after successful checkout
+        setAddToCart([]);
       } else {
-        alert("Error in confirming order");
+        alert("Error in confirming some orders");
       }
     } catch (error) {
-      console.error("Error confirming order data:", error);
+      console.error("Error confirming orders:", error);
     }
   };
-  
-  
-  
   return (
     <div className="bg-[#E6F7DA] min-h-screen px-8 py-6">
       {/* Header */}
@@ -152,6 +142,7 @@ const CheckOutPage = () => {
                 key={item.id}
                 className="flex items-center p-4 bg-white rounded-lg shadow-md"
               >
+                {console.log("item: ", item)}
                 {/* Product Image */}
                 <img
                   onClick={() => handleClick(item)}
@@ -280,32 +271,32 @@ const CheckOutPage = () => {
             </p>
 
             {/* product info */}
-              <div className="">
-            <h3 className="text-lg font-semibold mt-4">Order Summary</h3>
-            <div className="flex justify-between text-gray-700">
-              <span>Subtotal</span>
-              <span>Rs. {totalPrice}</span>
-            </div>
-            <div className="flex justify-between text-gray-700">
-              <span>Estimated Delivery & Handling</span>
-              <span>Free</span>
-            </div>
-            <div className="flex justify-between text-gray-700">
-              <span>Estimated Taxes</span>
-              <span>Rs. 21</span>
-            </div>
-            <hr className="my-2" />
-            <div className="flex justify-between font-bold">
-              <span>Total</span>
-              <span>Rs. {totalPrice + 21}</span>
-            </div>
-
-            
+            <div className="">
+              <h3 className="text-lg font-semibold mt-4">Order Summary</h3>
+              <div className="flex justify-between text-gray-700">
+                <span>Subtotal</span>
+                <span>Rs. {totalPrice}</span>
+              </div>
+              <div className="flex justify-between text-gray-700">
+                <span>Estimated Delivery & Handling</span>
+                <span>Free</span>
+              </div>
+              <div className="flex justify-between text-gray-700">
+                <span>Estimated Taxes</span>
+                <span>Rs. 21</span>
+              </div>
+              <hr className="my-2" />
+              <div className="flex justify-between font-bold">
+                <span>Total</span>
+                <span>Rs. {totalPrice + 21}</span>
+              </div>
             </div>
 
             <div className="space-y-4 mt-4">
-              <button onClick={handleCheckout}
-              className="w-full  bg-[#7ED321] hover:bg-green-700 text-white py-2 rounded-md font-semibold">
+              <button
+                onClick={handleCheckout}
+                className="w-full  bg-[#7ED321] hover:bg-green-700 text-white py-2 rounded-md font-semibold"
+              >
                 Confirm Order
               </button>
             </div>
