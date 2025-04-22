@@ -73,11 +73,16 @@ const getProducts = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        const { id } = req.params;
-        const deletedProduct = await Product.findByIdAndDelete(id);
-        if (!deletedProduct) {
-            return res.status(404).json({ status: 0, msg: "Product not found" });
+        const { id } = req.params; // ✅ Extract ID correctly from route params
+
+        if (!id) {
+            return res.status(400).json({ status: 0, msg: "Product not found" });
         }
+
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        console.log(deletedProduct)
+        
+
         res.json({ status: 1, msg: "Product deleted successfully" });
     } catch (error) {
         console.error("Error deleting product:", error);
@@ -103,6 +108,54 @@ const searchProduct = async (req, res) => {
         res.status(500).json({ status: 0, msg: "Internal server error" });
     }
 };
+const updateProduct = async (req, res) =>{
+    try {
+        const { id } = req.params; // Extract ID correctly from route params
+        const { pname, short_description, long_description, stock, price, discount, discount_date, category, visibility, scheduled_date } = req.body;
+        if (!id) {
+            return res.status(400).json({ status: 0, msg: "Product not found" });
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, {
+            pname,
+            short_description,
+            long_description,
+            stock,
+            price,
+            discount,
+            discount_date,
+            category,
+            visibility,
+            scheduled_date
+        }, { new: true });
+
+        res.json({ status: 1, msg: "Product updated successfully", product: updatedProduct });
+    } catch (error) {
+        console.error("Error updating product:", error);
+        res.status(500).json({ status: 0, msg: "Internal server error" });
+    }
+}
+
+const getProductbById=async(req,res)=>{
+    try {
+        const { id } = req.params; // Extract ID correctly from route params
+
+        if (!id) {
+            return res.status(400).json({ status: 0, msg: "Product not found" });
+        }
+
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(404).json({ status: 0, msg: "Product not found" });
+        }
+
+        res.json({ status: 1, product });
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        res.status(500).json({ status: 0, msg: "Internal server error" });
+    }
+}
 
 
 
@@ -110,5 +163,7 @@ module.exports = {
     newProduct,
     getProducts,
     deleteProduct,
-    searchProduct
+    searchProduct,
+    updateProduct,
+    getProductbById
 };
