@@ -19,7 +19,8 @@ import Setting from "./Pages/setting/Setting";
 import AddProduct from "./Pages/product/AddProduct";
 import UserRegistration from "./Components/UserRegistration";
 import Login from "../src/Pages/Login";
-
+import { ToastContainer } from "react-toastify";    
+import EditProduct from "./Pages/product/EditProduct";
 
 function App() {
   const router = createBrowserRouter([
@@ -76,6 +77,11 @@ function App() {
           path: "add_product",
           element: <AddProduct />,
         },
+        {
+          path: "edit_product/:id",
+          element: <EditProduct />,
+        },
+
       ],
     },
     //payment
@@ -121,7 +127,12 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
+  );
 }
 
 export default App;

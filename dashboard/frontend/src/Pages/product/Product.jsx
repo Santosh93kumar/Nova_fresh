@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import edit from "../../assets/actions.png"
-import { MdAdd, MdOutlineDeleteForever } from "react-icons/md";
+import { MdAdd, MdOutlineDeleteForever ,MdEdit} from "react-icons/md";
 // import del from "../../assets/del.png"
 import { useNavigate } from "react-router-dom";
 // import i1 from '../../assets/snekar.png'
@@ -9,17 +9,21 @@ import { useNavigate } from "react-router-dom";
 // import i4 from '../../assets/denim.png'
 import DeleteProductPopup from './DeleteProduct';
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [product, setProduct ] = useState([]);
-  console.log(product)
+  console.log("Product Object:", product);
+console.log("Product ID:", product[0]?._id);
+
   const productsPerPage = 10;
   const navigate = useNavigate();
   
   useEffect(() => {
           const fetchData = async () => {
             try{
+              
               const response = await axios.get(`${import.meta.env.VITE_API_URL}/product`);
               console.log("hello",import.meta.env.VITE_API_URL)
               console.log("abc",response)
@@ -35,7 +39,8 @@ const Product = () => {
           }
           };
           fetchData();
-        }, []);
+          
+        }, [product]);
 
   // Sample product data based on the image
   const products = product.map((prod) => ({
@@ -43,23 +48,10 @@ const Product = () => {
     id: prod._id,
     category: prod.category,    
     name: prod.pname,
-    image: typeof prod.images === 'string' && prod.images.startsWith("http") ? prod.images : `${import.meta.env.VITE_API_URL}/uploads/${prod.images}`,
+    image: typeof prod.images === 'string' && prod.images.startsWith("http") ? prod.images : `${import.meta.env.VITE_API_URL}/uploads/${prod.images[0]}`,
     status: prod.stock > 0 ? "In stock" : "Out of stock",
     price: prod.price
   }));
-  // const products = [
-  //   { id: 1, name: "Nike Air Force 1 '07 LV8", category: "Shoes", status: "In stock", price: "$122.27" ,image: i1},
-  //   { id: 2, name: "Nike Sportswear Lightweight Future", category: "Caps", status: "Out of stock", price: "$15.95",image: i2 },
-  //   { id: 3, name: "Nike Air Max Penny", category: "Shoes", status: "In stock", price: "$132.50",image: i3},
-  //   { id: 4, name: "Nike Windrunner SYX-E", category: "Tracksuit", status: "Out of stock", price: "$102.43",image: i1 },
-  //   { id: 5, name: "Nike Storm-FIT x Theory", category: "Tracksuit", status: "In stock", price: "$9.54" ,image: i3},
-  //   { id: 6, name: "Nike Everyday Plus Cushioned", category: "Socks", status: "Out of stock", price: "$122.27",image: i4 },
-  //   { id: 7, name: "Nike Everyday Lightweight", category: "Socks", status: "In stock", price: "$14.87" ,image: i1},
-  //   { id: 8, name: "NikeCourt Dri-FIT Advantage", category: "T-Shirt", status: "Out of stock", price: "$39.85" ,image: i2},
-  //   { id: 9, name: "Nike Dri-FIT Academy", category: "T-Shirt", status: "In stock", price: "$23.64",image: i2},
-  //   { id: 10, name: "Nike Dri-FIT Academy", category: "T-Shirt", status: "Out of stock", price: "$27.48",image: i4 },
-  //   { id: 11, name: "Nike Dri-FIT Academy", category: "T-Shirt", status: "In stock", price: "$27.48",image: i3 },
-  // ];
   
   // Calculate pagination
   const totalPages = Math.ceil(products.length / productsPerPage);
@@ -87,11 +79,31 @@ const Product = () => {
       setIsOpen(false);
     };
     
-    const handleDelete = () => {
-      console.log("Product deleted!");
-      setIsOpen(false);
-  
+    const handledeleteproduct = async (productId) => {
+      try {
+        console.log("Deleting product with ID:", productId);
+        
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/product/delete/${productId}`);;
+        
+        if (response.data.status === 1) {
+          console.log("Product deleted successfully");
+          toast.success("Product deleted successfully");
+          
+         
+        } else {
+          console.error("Error:", response.data.msg);
+          toast.error("Error deleting product");
+        
+        }
+        setIsOpen(false)
+    
+      } catch (err) {
+        console.error("Error deleting product:", err);
+       
+      }
     };
+    
+    
   
   return (
     <div className="p-6 bg-white h-full shadow-sm">
@@ -118,7 +130,7 @@ const Product = () => {
             </tr>
           </thead>
           <tbody>
-            {currentProducts.map((product) => (
+            {currentProducts.map((product, index) => (
               <tr key={product.id} className="border-t border-gray-100">
                 <td className="py-4 px-4 flex items-center">
                   <div className="w-10 h-10 mr-3 bg-gray-200 rounded-md flex items-center justify-center">
@@ -151,18 +163,23 @@ const Product = () => {
                 <td className="py-4 px-4 font-medium">{product.price}</td>
                 <td className="py-4 px-4">
                   <div className="flex justify-center space-x-2">
-                    <button className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center" onClick={() => navigate("/product/add_product")}>
-                      <MdAdd />
+                    <button className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center" onClick={() => navigate("/product/edit_product/" + product.id)}>
+                      <MdEdit />
                     </button>
-                    <button className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center" onClick={() => setIsOpen(true)}>
+                    <button className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center" onClick={()=>{
+                    setIsOpen(true)
+                     } }>
                     <MdOutlineDeleteForever />
                     </button>
                     <DeleteProductPopup
                       isOpen={isOpen}
                       onCancel={handleCancel}
-                      onDelete={handleDelete}
+                      onDelete={handledeleteproduct}
+                      productid={product.id}
+                    
             
                     />
+                  
                   </div>
                 </td>
               </tr>

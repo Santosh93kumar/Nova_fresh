@@ -4,8 +4,10 @@ const DeleteProduct= ({
   isOpen, 
   onCancel, 
   onDelete, 
+  productid
  
 }) => {
+  console.log("p",productid)
   if (!isOpen) return null;
 
   return (
@@ -18,7 +20,7 @@ const DeleteProduct= ({
         <div className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Delete product item</h3>
           <p className="text-sm text-gray-600">
-            Are you sure you want to delete this product? Item which deleted cannot be recovered.
+          Are you sure you want to delete this product? 
           </p>
 
           <div className="mt-6 flex justify-end space-x-2">
@@ -29,7 +31,7 @@ const DeleteProduct= ({
               Cancel
             </button>
             <button
-              onClick={onDelete}
+              onClick={()=> onDelete(productid)}
               className="px-4 py-2 text-sm font-medium text-white bg-[#445FE8] rounded-md hover:bg-blue-700 focus:outline-none"
             >
               Delete

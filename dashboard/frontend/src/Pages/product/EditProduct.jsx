@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, Plus, X } from "lucide-react";
+import { Calendar, Edit, Plus, X } from "lucide-react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Select from 'react-select';
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [product, setProduct] = useState({
     pname: "",
     short_description: "",
@@ -21,10 +23,37 @@ const AddProduct = () => {
   });
 
   const [categories, setCategories] = useState([]);
+    const { id } = useParams(); 
   const categoryOptions= categories.map((category) => ({
     value: category,
     label: category.charAt(0).toUpperCase() + category.slice(1),
   }));
+
+  const [previewImages, setPreviewImages] = useState([]);
+
+
+useEffect(() => {
+    const fetchProduct=async () =>{
+        try{
+            const response=await axios.get(`${import.meta.env.VITE_API_URL}/product/get/${id}`);
+            console.log("Product Details:", response.data); // Debugging
+            setProduct(response.data.product)
+            setPreviewImages(response.data.product.images.map((img)=>`${import.meta.env.VITE_API_URL}/uploads/${img}`))
+        }
+        catch(error){
+            console.error("Error fetching product details:", error);
+        }
+    }
+    fetchProduct()
+
+},[])
+
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,8 +85,10 @@ const AddProduct = () => {
     fetchCategories();
   }, []);
 
-  const [previewImages, setPreviewImages] = useState([]);
 
+
+
+ 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProduct({ ...product, [name]: type === "checkbox" ? checked : value });
@@ -108,28 +139,13 @@ const AddProduct = () => {
     console.log("Form Data:", ...formData.entries());
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/product/new`,
+        `${import.meta.env.VITE_API_URL}/product/update/${id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       if (response.data.status === 1) {
-        alert("Product details saved successfully!");
-        setProduct({
-          pname: "",
-          short_description: "",
-          long_description: "",
-          stock: "",
-          price: "",
-          discount: "",
-          discountEnabled: false,
-          category: "",
-          selectedTags: [],
-          visibility: "Published",
-          discount_date: "",
-          scheduled_date: "",
-          images: [],
-        });
-        setPreviewImages([]);
+        toast.success("Product details updated successfully!");
+       
       } else {
         alert("Error saving product details.");
       }
@@ -147,7 +163,7 @@ const AddProduct = () => {
 
   return (
     <div className="bg-gray-50 p-6 min-h-screen">
-      <h1 className="text-2xl font-semibold mb-6">Add product</h1>
+      <h1 className="text-2xl font-semibold mb-6">Edit Product</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -381,7 +397,7 @@ const AddProduct = () => {
             <h2 className="text-lg font-medium">Category</h2>
 
             <div>
-            <Select
+              <Select
                 type="text"
                 name="category"
                 placeholder="Search or create category"
@@ -400,7 +416,7 @@ const AddProduct = () => {
               />
             </div>
 
-          
+       
           </div>
         </div>
 
@@ -415,7 +431,7 @@ const AddProduct = () => {
             type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Add product
+            Update Product
           </button>
         </div>
       </form>
@@ -423,4 +439,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;
