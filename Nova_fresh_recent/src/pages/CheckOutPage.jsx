@@ -63,30 +63,7 @@ const CheckOutPage = () => {
 
   const isWatchlisted = (product) => watchlist.some((p) => p.id === product.id);
 
-  //payment
-  // const handlePayment = async (e) => {
-  //   e.preventDefault();
-  //   const stripe = await stripePromise;
-  //   if (!stripe) {
-  //     console.error("Stripe is not initialized!");
-  //     return;
-  //   }
-
-  //   const { error } = await stripe.redirectToCheckout({
-  //     lineItems: addToCart.map((item) => ({
-  //       price: item.stripePriceId, // Use the price ID from Stripe Dashboard
-  //       quantity: item.quantity || 1,
-  //     })),
-  //     mode: "payment",
-  //     successUrl: "http://localhost:3000/success", // Change when deployed
-  //     cancelUrl: "http://localhost:3000/cancel",
-  //   });
-
-  //   if (error) {
-  //     console.error("Error after await function:", error);
-  //   }
-  // };
-  
+ 
   const handleCheckout = async (e) => {
     e.preventDefault();
   
@@ -132,9 +109,9 @@ const CheckOutPage = () => {
   
   
   return (
-    <div className="bg-[#E6F7DA] min-h-screen px-8 py-6">
+    <div className="bg-[#E6F7DA] min-h-screen px-8 pt-2">
       {/* Header */}
-      <div className="flex justify-between mb-6 font-bold lg:mt-22 mt-30">
+      <div className="flex justify-between mb-6 font-bold lg:mt-2 mt-10">
         <h2 className="text-3xl">Shopping Cart</h2>
         <button
           className="cursor-pointer text-5xl"

@@ -8,6 +8,6 @@ productRoute.get("/", getProducts);
 productRoute.delete("/delete/:id", deleteProduct);
 productRoute.get("/search", searchProduct);
 productRoute.get("/get/:id", getProductbById); 
-productRoute.post("/update/:id",updateProduct)
+productRoute.post("/update/:id",uploads("uploads/").array("images", 10), updateProduct)
 
 module.exports = productRoute;

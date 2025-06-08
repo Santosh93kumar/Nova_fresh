@@ -32,6 +32,7 @@ const newProduct = async (req, res) => {
         images,
     };
 
+
     if (req.files && req.files.length > 0) {
         productData.images = req.files.map(file => file.filename);
     }
@@ -109,14 +110,15 @@ const searchProduct = async (req, res) => {
     }
 };
 const updateProduct = async (req, res) =>{
-    try {
-        const { id } = req.params; // Extract ID correctly from route params
-        const { pname, short_description, long_description, stock, price, discount, discount_date, category, visibility, scheduled_date } = req.body;
+    console.log(req.body,"body");
+    console.log(req.files,"file");
+        const { id } = req.params; // Extract ID correctly from route params        
+        console.log(req.body ,"req.body");
+        console.log(id,"id")
         if (!id) {
             return res.status(400).json({ status: 0, msg: "Product not found" });
         }
-
-        const updatedProduct = await Product.findByIdAndUpdate(id, {
+        let {
             pname,
             short_description,
             long_description,
@@ -126,9 +128,42 @@ const updateProduct = async (req, res) =>{
             discount_date,
             category,
             visibility,
-            scheduled_date
-        }, { new: true });
+            scheduled_date,
+            images,
+        } = req.body;
+    
+     
+        let productData = {
+            pname,
+            short_description,
+            long_description,
+            stock:Number(stock),
+            price: Number(price),
+            discount: discount === "null" || discount === "" ? null : Number(discount),
+            discount_date: discount_date === "null" || discount_date === "" ? null : discount_date,
+            category,
+            visibility,
+            scheduled_date: scheduled_date === "null" || scheduled_date === "" ? null : scheduled_date,
+            images,
+        };
+    
+        if (req.files && req.files.length > 0) {
+            productData.images = req.files.map(file => file.filename);
+        }
 
+        console.log(productData,"productData")
+
+        try {
+        const updatedProduct = await Product.findByIdAndUpdate(id,{ ...productData }, { new: true });
+
+        console.log(updatedProduct,"updatedProduct")
+      
+        if (!updatedProduct) {
+            return res.status(404).json({ status: 0, msg: "Product not found" });
+        }
+   
+       
+        console.log("Product updated successfully:", updatedProduct);
         res.json({ status: 1, msg: "Product updated successfully", product: updatedProduct });
     } catch (error) {
         console.error("Error updating product:", error);
