@@ -79,6 +79,7 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
@@ -102,6 +103,7 @@ router.post("/login", async (req, res) => {
 // @desc    Verify user token and return user data
 // @access  Private
 router.get("/verify", auth, async (req, res) => {
+  console.log("verifing")
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {

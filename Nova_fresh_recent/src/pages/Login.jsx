@@ -5,9 +5,17 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaXTwitter } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { z } from "zod";
+import { toast } from "react-toastify";
 // import { useDispatch } from "react-redux";
 // import { setToken } from "../slices/authSlice";
 // import { setUser } from "../slices/profileSlice";
+
+// ✅ Define Zod Schema for Login
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 function Login({ setSignUpModal, setLogInModal }) {
   const navigate = useNavigate();
@@ -31,9 +39,14 @@ function Login({ setSignUpModal, setLogInModal }) {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    // Email validation
-    if (!formData.email.includes("@")) {
-      alert("Please enter a valid email.");
+    const result = loginSchema.safeParse(formData);
+
+    if (!result.success) {
+      const formattedErrors = result.error.flatten().fieldErrors;
+      console.log("Validation Errors:", formattedErrors);
+      // Show first error dynamically
+      const firstError = Object.values(formattedErrors).flat()[0];
+      toast.error(firstError || "Validation failed!");
       return;
     }
 
@@ -45,6 +58,7 @@ function Login({ setSignUpModal, setLogInModal }) {
       const result = await login(email, password);
 
       if (result.success) {
+        toast.success("Login successful!");
         // Clear form
         setFormData({ email: "", password: "" });
         setLogInModal(false);
@@ -53,6 +67,7 @@ function Login({ setSignUpModal, setLogInModal }) {
         navigate("/", { replace: true });
       } else {
         setError(result.message || "Login failed. Please try again.");
+        toast.error("invalid credentuals")
       }
     } catch (error) {
       console.error("Error during login:", error);

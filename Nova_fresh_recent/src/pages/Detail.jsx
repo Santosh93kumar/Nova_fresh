@@ -30,7 +30,6 @@ const Detail = () => {
 
   const { selectedProduct, setAddToCart } = useProduct();
   const navigate = useNavigate();
-  console.log(selectedProduct);
 
   const addInCart = (product) => {
     setAddToCart((prevCart) => {
